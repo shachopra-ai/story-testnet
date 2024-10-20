@@ -99,6 +99,7 @@ LimitNOFILE=4096
 
 [Install]
 WantedBy=multi-user.target
+EOF
 
 # Download Archival Snapshot
 sudo cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/priv_validator_state.json.backup
