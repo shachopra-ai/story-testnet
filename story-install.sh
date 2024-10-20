@@ -18,9 +18,9 @@ go version
 
 # Install Story-Geth binaries
 cd $HOME
-wget story-geth https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64
-sudo chmod +x $HOME/story-geth
-mv $HOME/story-geth $HOME/go/bin/
+wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64
+sudo cp geth-linux-amd64 $HOME/go/bin/story-geth
+sudo chmod +x $HOME/go/bin/story-geth
 mkdir -p "$HOME/.story/story"
 mkdir -p "$HOME/.story/geth"
 
