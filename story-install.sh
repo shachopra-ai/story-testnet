@@ -18,7 +18,7 @@ go version
 
 # Install Story-Geth binaries
 cd $HOME
-wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64
+wget https://github.com/piplabs/story-geth/releases/download/v0.11.0/geth-linux-amd64
 sudo cp geth-linux-amd64 $HOME/go/bin/story-geth
 sudo chmod +x $HOME/go/bin/story-geth
 mkdir -p "$HOME/.story/story"
@@ -28,12 +28,12 @@ mkdir -p "$HOME/.story/geth"
 cd $HOME
 git clone https://github.com/piplabs/story
 cd story
-git checkout v0.11.0
+git checkout v0.13.0
 go build -o story ./client 
 mv $HOME/story/story $HOME/go/bin/
 
 # Initialize Story
-story init --network iliad
+story init --network odyssey
 
 # Add peers
 PEERS=$(curl -sS https://story-testnet-rpc.shachopra.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | paste -sd, -)
@@ -45,7 +45,7 @@ sed -i -e 's/^indexer = "null"/indexer = "kv"/' $HOME/.story/story/config/config
 
 # Install Cosmovisor
 cd $HOME
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.6.0
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.7.0
 
 # Cosmovisor setup
 echo "export DAEMON_NAME=story" >> $HOME/.bash_profile
@@ -69,7 +69,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/root/go/bin/story-geth --iliad --syncmode full
+ExecStart=/root/go/bin/story-geth --odyssey --syncmode full
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -104,12 +104,12 @@ EOF
 # Download Archival Snapshot
 sudo cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/priv_validator_state.json.backup
 sudo rm -rf $HOME/.story/story/data
-sudo rm -rf $HOME/.story/geth/iliad/geth/chaindata
-mkdir -p $HOME/.story/geth/iliad/geth
+sudo rm -rf $HOME/.story/geth/odyssey/geth/chaindata
+mkdir -p $HOME/.story/geth/odyssey/geth
 wget -O snapshot_story.lz4 https://story-snapshot.shachopra.com:8443/downloads/snapshot_story.lz4
 wget -O geth_story.lz4 https://story-snapshot.shachopra.com:8443/downloads/geth_story.lz4
 lz4 -c -d snapshot_story.lz4 | pv | sudo tar -xv -C $HOME/.story/story/
-lz4 -c -d geth_story.lz4 | pv | sudo tar -xv -C $HOME/.story/geth/iliad/geth/
+lz4 -c -d geth_story.lz4 | pv | sudo tar -xv -C $HOME/.story/geth/odyssey/geth/
 sudo cp $HOME/.story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json
 sudo rm snapshot_story.lz4
 sudo rm geth_story.lz4
