@@ -101,7 +101,7 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 
-# Download Archival Snapshot
+# Download Pruned Snapshot
 sudo cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/priv_validator_state.json.backup
 sudo rm -rf $HOME/.story/story/data
 sudo rm -rf $HOME/.story/geth/odyssey/geth/chaindata
